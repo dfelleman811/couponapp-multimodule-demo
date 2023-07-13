@@ -1,0 +1,39 @@
+
+// to make this task available to sub-project
+// put the entire task into a closure to the method allprojects
+
+// subprojects also exists for all sub-projects, but NOT the root project
+// this is great for re-using logic that applies to each sub-project
+
+// allprojects {
+
+//     task printProjectName {
+//         doLast() {
+//             println project.name
+//         }
+//     }
+
+// }
+subprojects {
+    apply plugin: 'application' // note the syntax difference here plugins {} does not work inside subprojects method
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    tasks.named('test') {
+        // Use JUnit Platform for unit tests.
+        useJUnitPlatform()
+    }
+}
